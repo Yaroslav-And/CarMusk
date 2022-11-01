@@ -1,3 +1,152 @@
+//burger menu***************************************************
+let menuBtn = document.querySelector('.menu-btn');
+let menu = document.querySelector('.hamburger-window');
+
+menuBtn.addEventListener('click', function () {
+    menuBtn.classList.toggle('active');
+    menu.classList.toggle('active');
+})
+//*********************************************************************** */
+
+//gallery***********************************************************
+const cards = Array.from(document.querySelectorAll(".gallery__card"));
+const gallerySlider = document.querySelector(".gallery-slider");
+const sliderContainer = document.querySelector(".slider__container");
+const picture = Array.from(document.querySelectorAll(".gallery__card__pic"));
+const sliderBtnLeft = document.querySelector(".slider__btn_left");
+const sliderBtnRight = document.querySelector(".slider__btn_right");
+const sliderClose = document.querySelector(".slider__close");
+
+let cardIndex = -1;
+let pictureFull;
+
+for (const card of cards) {
+    card.addEventListener("click", (event) => {
+        event.preventDefault();
+        cardIndex = cards.indexOf(card);
+        pictureFull = picture[cardIndex].cloneNode();
+        pictureFull.style.objectFit = "contain";
+        sliderContainer.append(pictureFull);
+        gallerySlider.classList.add("active");
+    });
+}
+
+sliderBtnLeft.addEventListener("click", (event) => {
+    event.preventDefault();
+    changePicture("left");
+});
+
+sliderBtnRight.addEventListener("click", (event) => {
+    event.preventDefault();
+    changePicture("right");
+});
+
+function changePicture(dir) {
+    if (dir === "left") {
+        if (cardIndex > 0) {
+            cardIndex--;
+        } else {
+            cardIndex = cards.length - 1;
+        }
+    } else if (dir === "right") {
+        if (cardIndex < cards.length - 1) {
+            cardIndex++;
+        } else {
+            cardIndex = 0;
+        }
+    }
+    let newPictureFull = picture[cardIndex].cloneNode();
+    newPictureFull.style.objectFit = "contain";
+    pictureFull.replaceWith(newPictureFull);
+    pictureFull = newPictureFull;
+}
+
+sliderClose.addEventListener("click", (event) => {
+    event.preventDefault();
+    gallerySlider.classList.remove("active");
+    pictureFull.remove();
+    newPictureFull.remove();
+});
+//gallery end*****************************************************************
+
+// стрелка возврата
+function trackScroll() {
+    let scrolled = window.pageYOffset;
+    let coords = document.documentElement.clientHeight;
+
+    if (scrolled > coords) {
+        goTopBtn.classList.add('back_to_top-show');
+    } else {
+        goTopBtn.classList.remove('back_to_top-show');
+    }
+}
+
+function backToTop() {
+    if (window.pageYOffset > 0) {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+}
+let goTopBtn = document.querySelector('.back_to_top');
+
+window.addEventListener('scroll', trackScroll);
+goTopBtn.addEventListener('click', backToTop);
+// стрелка возврата**************************************************
+
+
+//slider********************************************************************
+const images = document.querySelectorAll('.slider .slider-line figure img');
+const sliderLine = document.querySelector('.slider-line');
+let count = 0;
+let width;
+
+
+function init() {
+    width = document.querySelector('.slider').offsetWidth;
+    sliderLine.style.width = width * images.length + 'px';
+    images.forEach(item => {
+        item.style.width = width + 'px';
+        item.style.height = 'auto';
+    });
+    rollSlider();
+}
+
+window.addEventListener('resize', init);
+init();
+
+document.querySelector('.slider-prev').addEventListener('click', function () {
+    count--;
+    if (count < 0) {
+        count = images.length - 1;
+    }
+    rollSlider();
+});
+
+document.querySelector('.slider-next').addEventListener('click', function () {
+    count++;
+    if (count >= images.length) {
+        count = 0;
+    }
+    rollSlider();
+});
+
+function rollSlider() {
+    sliderLine.style.transform = 'translate(-' + count * width + 'px)';
+}
+//slider********************************************************************
+
+//button подробнее************************************************************
+let btns = document.querySelectorAll(".table-btn__text");
+btns.forEach(item => {
+    item.addEventListener('click', (e) => {
+        e.target.closest('.table-flex__block').querySelector('.table-flex__block-item2').classList.toggle("block-item2-active");
+
+    })
+})
+//button подробнее************************************************************
+
 //карусель................................................................................................
 function Ant(crslId) {
 
@@ -13,8 +162,8 @@ function Ant(crslId) {
     this.crslList = this.crslRoot.querySelector('.ant-carousel-list');
     this.crslElements = this.crslList.querySelectorAll('.ant-carousel-element');
     this.crslElemFirst = this.crslList.querySelector('.ant-carousel-element');
-    this.leftArrow = this.crslRoot.querySelector('div.ant-carousel-arrow-left');
-    this.rightArrow = this.crslRoot.querySelector('div.ant-carousel-arrow-right');
+    this.leftArrow = this.crslRoot.querySelector('.ant-carousel-arrow-left');
+    this.rightArrow = this.crslRoot.querySelector('.ant-carousel-arrow-right');
 
     // Initialization
     this.options = Ant.defaults;
@@ -195,46 +344,7 @@ Ant.initialize = function (that) {
 new Ant();
 //карусель................................................................................................
 
-//slider********************************************************************
-const images = document.querySelectorAll('.slider .slider-line figure img');
-const sliderLine = document.querySelector('.slider-line');
-let count = 0;
-let width;
 
-
-function init() {
-    width = document.querySelector('.slider').offsetWidth;
-    sliderLine.style.width = width * images.length + 'px';
-    images.forEach(item => {
-        item.style.width = width + 'px';
-        item.style.height = 'auto';
-    });
-    rollSlider();
-}
-
-window.addEventListener('resize', init);
-init();
-
-document.querySelector('.slider-prev').addEventListener('click', function () {
-    count--;
-    if (count < 0) {
-        count = images.length - 1;
-    }
-    rollSlider();
-});
-
-document.querySelector('.slider-next').addEventListener('click', function () {
-    count++;
-    if (count >= images.length) {
-        count = 0;
-    }
-    rollSlider();
-});
-
-function rollSlider() {
-    sliderLine.style.transform = 'translate(-' + count * width + 'px)';
-}
-//slider********************************************************************
 
 
 //slider2******************************************************************** 
@@ -276,93 +386,7 @@ document.querySelector('.slider-next2').addEventListener('click', function () {
 function rollSlider2() {
     sliderLine2.style.transform = 'translate(-' + count2 * width2 + 'px)';
 }
-//slider2******************************************************************** 
+//slider2********************************************************************
 
 
 
-//gallery***********************************************************
-const cards = Array.from(document.querySelectorAll(".gallery__card"));
-const gallerySlider = document.querySelector(".gallery-slider");
-const sliderContainer = document.querySelector(".slider__container");
-const picture = Array.from(document.querySelectorAll(".gallery__card__pic"));
-const sliderBtnLeft = document.querySelector(".slider__btn_left");
-const sliderBtnRight = document.querySelector(".slider__btn_right");
-const sliderClose = document.querySelector(".slider__close");
-
-let cardIndex = -1;
-let pictureFull;
-
-for (const card of cards) {
-    card.addEventListener("click", (event) => {
-        event.preventDefault();
-        cardIndex = cards.indexOf(card);
-        pictureFull = picture[cardIndex].cloneNode();
-        pictureFull.style.objectFit = "contain";
-        sliderContainer.append(pictureFull);
-        gallerySlider.classList.add("active");
-    });
-}
-
-sliderBtnLeft.addEventListener("click", (event) => {
-    event.preventDefault();
-    changePicture("left");
-});
-
-sliderBtnRight.addEventListener("click", (event) => {
-    event.preventDefault();
-    changePicture("right");
-});
-
-function changePicture(dir) {
-    if (dir === "left") {
-        if (cardIndex > 0) {
-            cardIndex--;
-        } else {
-            cardIndex = cards.length - 1;
-        }
-    } else if (dir === "right") {
-        if (cardIndex < cards.length - 1) {
-            cardIndex++;
-        } else {
-            cardIndex = 0;
-        }
-    }
-    let newPictureFull = picture[cardIndex].cloneNode();
-    newPictureFull.style.objectFit = "contain";
-    pictureFull.replaceWith(newPictureFull);
-    pictureFull = newPictureFull;
-}
-
-sliderClose.addEventListener("click", (event) => {
-    event.preventDefault();
-    gallerySlider.classList.remove("active");
-    pictureFull.remove();
-    newPictureFull.remove();
-});
-//gallery end*****************************************************************
-
-// стрелка возврата
-function trackScroll() {
-    let scrolled = window.pageYOffset;
-    let coords = document.documentElement.clientHeight;
-
-    if (scrolled > coords) {
-        goTopBtn.classList.add('back_to_top-show');
-    } else {
-        goTopBtn.classList.remove('back_to_top-show');
-    }
-}
-
-function backToTop() {
-    if (window.pageYOffset > 0) {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    }
-}
-let goTopBtn = document.querySelector('.back_to_top');
-
-window.addEventListener('scroll', trackScroll);
-goTopBtn.addEventListener('click', backToTop);
-// стрелка возврата**************************************************

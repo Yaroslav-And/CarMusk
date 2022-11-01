@@ -36,9 +36,32 @@ header{
     display: flex;
     padding: 0;
 }
-.head-menu__link:hover{
-  color: #DB3138;
+
+.head-menu__link {
+  text-decoration: none;
+  color: #fff;
+  position: relative;
+  transition: all 0.4s ease;
 }
+
+.head-menu__link::after { 
+  content: "";
+  position: absolute;
+  height: 2px;
+  background-color: #DB3138;;
+  width: 0;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  transition: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) all;
+}
+
+.head-menu__link:hover { color: #DB3138; }
+.head-menu__link:hover::after { width: 100%; }
+
+
+
+
 .head-menu__link-item{
     list-style: none;
     font-weight: 500;
@@ -175,8 +198,12 @@ margin-top: 25px;
 .achievements-flex__table-secondColumn{
     margin-top: 40px;
 }
-
+.burger__title{
+  text-align: left;
+  color: #DB3138;
+}
 /*карусель.......................................................................................................*/
+
 @media screen and (min-width: 911px) {
   .ant-carousel {
     max-width: 810px;
@@ -222,14 +249,14 @@ margin-top: 25px;
     height:50px;
   }
   .ant-carousel-element__item{
-    width: 60%;
+    width: 70%;
     position: absolute;
     font-size: 14px;
     line-height: 140%;
     text-align: center;
     letter-spacing: 0.05em;
     text-transform: uppercase;
-        top:60%;
+        top:80%;
         left:50%;
     transform:translate(-50%, -50%);
     }
@@ -258,35 +285,36 @@ margin-top: 25px;
   }
   
   /* Navigation item styles */
-  div.ant-carousel-arrow-left,
-  div.ant-carousel-arrow-right {
+  .ant-carousel-arrow-left,
+  .ant-carousel-arrow-right {
     width: 71px;
     height: 71px;
     position: absolute;
     cursor: pointer;
     opacity: 0.6;
     z-index: 32;
+    background: none;
+    border: none;
+    padding: 0;
   }
   
-  div.ant-carousel-arrow-left {
+  .ant-carousel-arrow-left {
     left: -80px;
     top: 40%;
     display: block;
-    background: url("../img/arrayleft.png") no-repeat;
   }
   
-  div.ant-carousel-arrow-right {
+  .ant-carousel-arrow-right {
     right: -80px;
     top: 40%;
     display: block;
-    background: url("../img/arrayright.png") no-repeat;
   }
   
-  div.ant-carousel-arrow-left:hover {
+  .ant-carousel-arrow-left:hover {
     opacity: 1.0;
   }
   
-  div.ant-carousel-arrow-right:hover {
+  .ant-carousel-arrow-right:hover {
     opacity: 1.0;
   }
   
@@ -421,6 +449,22 @@ text-transform: uppercase;
   margin: 0 auto;
   width: 70%;
 }
+
+.table-flex__block-item2{
+  display: none;
+  font-size: 16px;
+  line-height: 140%;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin: 0 auto;
+  width: 70%;
+  width: 119px;
+}
+.block-item2-active{
+  display: block;
+  transition: margin 1s ease-out 0.5s;
+}
+
 .table-btn{
   margin-top: 20px;
   width: 70px;
@@ -638,110 +682,82 @@ margin: 0;
 }
 
 
-/******бургер меню*********************/
+/******бургер меню***************************************************/
 .hamburger-menu{
   display: none;
 }
-#menu__toggle {
-  opacity: 0;
-}
-/* стилизуем кнопку */
-.menu__btn {
+/* Гамбургер иконка */
+.menu-btn {
   display: flex; /* используем flex для центрирования содержимого */
   align-items: center;  /* центрируем содержимое кнопки */
   position: fixed;
-  top: 30px;
-  right: 30px;
+  top: 20px;
+  right: 20px;
   width: 26px;
   height: 26px;
   cursor: pointer;
   z-index: 1;
 }
-/* добавляем "гамбургер" */
-.menu__btn > span,
-.menu__btn > span::before,
-.menu__btn > span::after {
-  display: block;
-  position: absolute;
-  width: 100%;
-  height: 2px;
-  background-color: #DB3138;
-}
-.menu__btn > span::before {
-  content: '';
-  top: -8px;
-  right: -4px;
-}
-.menu__btn > span::after {
-  content: '';
-  top: 8px;
-  right: -4px;
+
+.menu-btn span {
+	width: 30px;
+	height: 2px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background-color: #DB3138;
+	transition: all 0.5s;
 }
 
-/* контейнер меню */
-.menu__box {
-  display: block;
-  position: fixed;
-  visibility: hidden;
-  top: 0;
-  left: -100%;
-  width: 300px;
-  height: 100%;
-  margin: 0;
-  padding: 80px 0;
-  list-style: none;
-  text-align: center;
-  background-color: #1E1E1E;
-  box-shadow: 1px 0px 6px rgba(0, 0, 0, .2);
-  z-index: 90000;
+.menu-btn span:nth-of-type(2) {
+	top: calc(50% - 8px);
 }
-/* элементы меню */
-.menu__item {
-  display: block;
-  padding: 12px 24px;
-  color: #333;
-  font-size: 20px;
-  font-weight: 600;
-  text-decoration: none;
-  color: #fff;
+.menu-btn span:nth-of-type(3) {
+	top: calc(50% + 8px);
 }
-.menu__item:hover {
+
+/* Меняем гамбургер иконку, когда меню открыто */
+.menu-btn.active span:nth-of-type(1) {
+  display: none;
+}
+.menu-btn.active span:nth-of-type(2) {
+  top: 50%;
+  transform: translate(-50%, 0%) rotate(45deg);  
+}
+.menu-btn.active span:nth-of-type(3) {
+  top: 50%;
+  transform: translate(-50%, 0%) rotate(-45deg); 
+}
+
+/* Меню, которое будет появляться */
+.hamburger-window {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 60%;
+	height: 100%;
+	padding: 15px;
+  background: #1E1E1E;
+	transform: translateX(-100%);
+	transition: transform 0.5s; 
+  z-index: 999;
+}
+
+.hamburger-window.active {
+	transform: translateX(0);
+}
+.hamburger-window li {
+	list-style-type: none;
+  margin: 15px 0;
+  position: relative;
+}
+.hamburger-window a:hover{
   color: #DB3138;
 }
+/******бургер меню конец**********************************************/
 
-#menu__toggle:checked ~ .menu__btn > span {
-  transform: rotate(45deg);
-  right: 0;
-}
-#menu__toggle:checked ~ .menu__btn > span::before {
-  top: 0;
-  transform: rotate(0);
-  right: 0;
-}
-#menu__toggle:checked ~ .menu__btn > span::after {
-  top: 0;
-  right: 0;
-  transform: rotate(90deg);
-}
-#menu__toggle:checked ~ .menu__box {
-  visibility: visible;
-  left: 0;
-}
-
-.menu__btn > span,
-.menu__btn > span::before,
-.menu__btn > span::after {
-  transition-duration: .25s;
-}
-.menu__box {
-  transition-duration: .25s;
-}
-.menu__item {
-  transition-duration: .25s;
-}
-/******бургер меню конец*********************/
-
-/****стрелка возврата*************/
+/****стрелка возврата************************************************/
 .back_to_top{
   position: fixed;
   bottom: 80px;
@@ -793,6 +809,7 @@ margin: 0;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
   }
+
 }
  @media screen and (max-width: 850px) {
   .description-flex{
